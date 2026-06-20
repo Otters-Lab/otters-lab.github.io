@@ -153,8 +153,11 @@
       font-family: monospace; font-size: 10px; color: #a6bcb9;
       overflow: hidden;
     }
-    .shot--img { border: 0; background: #f4f7f6; }
-    .shot--img img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .shot--img {
+      border: 0; background: #f4f7f6;
+      aspect-ratio: auto; align-self: flex-start;
+    }
+    .shot--img img { width: 100%; height: auto; display: block; }
     .cta {
       display: flex; align-items: center; justify-content: center; gap: 9px;
       padding: 15px; border-radius: 16px;
@@ -226,6 +229,7 @@
         tagline: 'Your everyday AI chat assistant',
         icon: 'imgs/fridayai-icon.jpg', bg: '#3a3a3a',
         desc: 'A friendly AI assistant for everyday questions, writing, and ideas. Ask anything and get clear, helpful answers — right when you need them.',
+        shots: ['imgs/fridayai/1.jpg', 'imgs/fridayai/2.jpg', 'imgs/fridayai/3.jpg'],
         appStore: 'https://apps.apple.com/us/app/copilot-ai-ai-chat-assistant/id6446813180'
       },
       {
@@ -240,6 +244,7 @@
         tagline: 'The right hashtags, instantly',
         icon: 'imgs/hashtagspro-icon.jpg', bg: '#f2a7bd',
         desc: 'Find the perfect hashtags every time. Hashtags Pro uses AI to suggest the tags that actually grow your reach — no more guesswork.',
+        shots: ['imgs/hashtagspro/1.jpg', 'imgs/hashtagspro/2.jpg', 'imgs/hashtagspro/3.jpg'],
         appStore: 'https://apps.apple.com/us/app/hashtags-pro/id6446612123'
       },
       {
@@ -247,6 +252,7 @@
         tagline: 'Find any photo in seconds',
         icon: 'imgs/imago-icon.jpg', bg: '#f3f3f3',
         desc: 'Search your photo library the natural way. Describe what you remember and AI Photo Finder surfaces the right shot — no endless scrolling.',
+        shots: ['imgs/imago/1.jpg', 'imgs/imago/2.jpg', 'imgs/imago/3.jpg'],
         appStore: 'https://apps.apple.com/us/app/ai-photo-finder/id6464158178'
       },
       {
