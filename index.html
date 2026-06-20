@@ -151,7 +151,10 @@
       border: 1px dashed #d6e2e0;
       display: flex; align-items: center; justify-content: center;
       font-family: monospace; font-size: 10px; color: #a6bcb9;
+      overflow: hidden;
     }
+    .shot--img { border: 0; background: #f4f7f6; }
+    .shot--img img { width: 100%; height: 100%; object-fit: cover; display: block; }
     .cta {
       display: flex; align-items: center; justify-content: center; gap: 9px;
       padding: 15px; border-radius: 16px;
@@ -204,11 +207,7 @@
         </div>
       </div>
       <p class="modal-desc" id="m-desc"></p>
-      <div class="shots">
-        <div class="shot">screenshot</div>
-        <div class="shot">screenshot</div>
-        <div class="shot">screenshot</div>
-      </div>
+      <div class="shots" id="m-shots"></div>
       <a class="cta" id="m-cta" href="#" target="_blank" rel="noopener">View on the App Store →</a>
       <div class="legal-links">
         <a id="m-privacy" href="#" target="_blank" rel="noopener">Privacy Policy</a>·
@@ -223,39 +222,39 @@
     // instead of a letter glyph.
     const APPS = [
       {
-        id: 'fridayai', letter: 'C', name: 'Copilot AI',
+        id: 'fridayai', name: 'Copilot AI',
         tagline: 'Your everyday AI chat assistant',
-        bg: '#d6e7e4', fg: '#3f8a90',
+        icon: 'imgs/fridayai-icon.jpg', bg: '#3a3a3a',
         desc: 'A friendly AI assistant for everyday questions, writing, and ideas. Ask anything and get clear, helpful answers — right when you need them.',
         appStore: 'https://apps.apple.com/us/app/copilot-ai-ai-chat-assistant/id6446813180'
       },
       {
-        id: 'gengoya', letter: 'G', name: 'GENGOYA',
+        id: 'gengoya', name: 'GENGOYA',
         tagline: 'Captions & posts that pop',
-        bg: '#e6dff0', fg: '#8478a0',
+        icon: 'imgs/gengoya-icon.jpg', bg: '#e8552f',
         desc: 'Level up your social media with AI. GENGOYA helps you write scroll-stopping captions and posts in seconds, so your content always lands.',
         appStore: 'https://apps.apple.com/us/app/gengoya/id6590617491'
       },
       {
-        id: 'hashtagspro', letter: 'H', name: 'Hashtags Pro',
+        id: 'hashtagspro', name: 'Hashtags Pro',
         tagline: 'The right hashtags, instantly',
-        bg: '#d7e3f0', fg: '#5b82a8',
+        icon: 'imgs/hashtagspro-icon.jpg', bg: '#f2a7bd',
         desc: 'Find the perfect hashtags every time. Hashtags Pro uses AI to suggest the tags that actually grow your reach — no more guesswork.',
         appStore: 'https://apps.apple.com/us/app/hashtags-pro/id6446612123'
       },
       {
-        id: 'imago', letter: 'A', name: 'AI Photo Finder',
+        id: 'imago', name: 'AI Photo Finder',
         tagline: 'Find any photo in seconds',
-        bg: '#f1ddd6', fg: '#c07c6b',
+        icon: 'imgs/imago-icon.jpg', bg: '#f3f3f3',
         desc: 'Search your photo library the natural way. Describe what you remember and AI Photo Finder surfaces the right shot — no endless scrolling.',
         appStore: 'https://apps.apple.com/us/app/ai-photo-finder/id6464158178'
       },
       {
         id: 'sudsy', name: 'Sudsy!',
         tagline: 'Laundry, sorted the smart way',
-        icon: 'imgs/sudsy-icon.png',
-        bg: '#2a2350', fg: '#fff',
+        icon: 'imgs/sudsy-icon.png', bg: '#2a2350',
         desc: 'Never second-guess the laundry again. Scan your care labels with the camera and Sudsy! sorts every garment into the right wash and dry groups.',
+        shots: ['imgs/sudsy/1-closet.png', 'imgs/sudsy/2-wash-plan.png', 'imgs/sudsy/3-hamper.png'],
         comingSoon: true
       }
     ];
@@ -266,15 +265,15 @@
     // Paint an icon tile: image fill when `app.icon` is set, otherwise a
     // colored letter glyph.
     function paintIcon(el, app) {
-      el.style.color = app.fg;
+      el.style.color = app.fg || '#fff';
       if (app.icon) {
         el.textContent = '';
-        el.style.background = app.bg + ' center/cover no-repeat';
+        el.style.background = (app.bg || '#eee') + ' center/cover no-repeat';
         el.style.backgroundImage = 'url(' + app.icon + ')';
       } else {
         el.style.backgroundImage = 'none';
-        el.style.background = app.bg;
-        el.textContent = app.letter;
+        el.style.background = app.bg || '#dde9e7';
+        el.textContent = app.letter || app.name.charAt(0);
       }
     }
 
@@ -299,6 +298,26 @@
       document.getElementById('m-title').textContent = app.name;
       document.getElementById('m-tagline').textContent = app.tagline;
       document.getElementById('m-desc').textContent = app.desc;
+
+      // Screenshots: real images when provided, otherwise three placeholders.
+      const shots = document.getElementById('m-shots');
+      shots.textContent = '';
+      const slots = app.shots && app.shots.length ? app.shots : [null, null, null];
+      slots.forEach((src, i) => {
+        const cell = document.createElement('div');
+        cell.className = 'shot';
+        if (src) {
+          cell.classList.add('shot--img');
+          const img = document.createElement('img');
+          img.src = src;
+          img.alt = app.name + ' screenshot ' + (i + 1);
+          img.loading = 'lazy';
+          cell.appendChild(img);
+        } else {
+          cell.textContent = 'screenshot';
+        }
+        shots.appendChild(cell);
+      });
 
       const cta = document.getElementById('m-cta');
       if (app.comingSoon) {
