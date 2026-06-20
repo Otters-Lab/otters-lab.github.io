@@ -1,1 +1,332 @@
-<p> Hello World! from Otters </p>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>OttersLab — calm, useful iOS apps</title>
+  <meta name="description" content="OttersLab is a tiny studio crafting iOS apps that are calm, useful, and a little playful." />
+
+  <!-- Open Graph -->
+  <meta property="og:title" content="OttersLab" />
+  <meta property="og:description" content="A tiny studio crafting iOS apps that are calm, useful, and a little playful." />
+  <meta property="og:image" content="imgs/otter-logo.png" />
+  <meta property="og:type" content="website" />
+
+  <link rel="icon" type="image/png" href="imgs/otter-logo.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Nunito:wght@400;500;600;700&display=swap" rel="stylesheet" />
+
+  <style>
+    :root {
+      --accent: #3f8a90;
+      --ink: #243b39;
+      --muted: #5e7c79;
+      --faint: #9bb1ae;
+    }
+    * { box-sizing: border-box; }
+    html, body { margin: 0; }
+    body {
+      font-family: 'Nunito', sans-serif;
+      background: radial-gradient(900px 520px at 50% -60px, #e6f1ef 0%, #f4faf8 55%, #f6fbf9 100%);
+      min-height: 100vh;
+    }
+
+    @keyframes ol-float { 0%,100% { transform: translateY(0) rotate(-1.5deg); } 50% { transform: translateY(-14px) rotate(1.5deg); } }
+    @keyframes ol-pop  { from { opacity: 0; transform: translateY(16px) scale(.95); } to { opacity: 1; transform: translateY(0) scale(1); } }
+    @keyframes ol-fade { from { opacity: 0; } to { opacity: 1; } }
+    @media (prefers-reduced-motion: reduce) {
+      .logo { animation: none !important; }
+    }
+
+    .page {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 60px 24px 48px;
+    }
+
+    /* Hero */
+    .logo {
+      width: 184px; height: 184px;
+      object-fit: contain;
+      animation: ol-float 5.5s ease-in-out infinite;
+      filter: drop-shadow(0 18px 26px rgba(63,100,98,.18));
+    }
+    h1 {
+      font-family: 'Fredoka', sans-serif;
+      font-weight: 600; font-size: 46px;
+      color: var(--ink);
+      margin: 18px 0 0; letter-spacing: -.01em;
+    }
+    .tagline {
+      font-size: 19px; line-height: 1.55;
+      color: var(--muted);
+      margin: 12px 0 0; max-width: 480px; text-align: center;
+    }
+
+    /* Apps */
+    .apps-label {
+      font-family: 'Fredoka', sans-serif;
+      font-weight: 600; font-size: 13px;
+      letter-spacing: .16em; text-transform: uppercase;
+      margin: 54px 0 26px; color: var(--accent);
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(3, 128px);
+      gap: 30px 38px;
+      justify-content: center;
+    }
+    .app {
+      display: flex; flex-direction: column; align-items: center; gap: 13px;
+      cursor: pointer;
+      transition: transform .2s ease;
+      background: none; border: 0; padding: 0; font: inherit;
+    }
+    .app:hover, .app:focus-visible { transform: translateY(-7px); outline: none; }
+    .app .icon {
+      width: 104px; height: 104px;
+      border-radius: 27px;
+      box-shadow: 0 12px 26px rgba(40,70,68,.14);
+      display: flex; align-items: center; justify-content: center;
+      font-family: 'Fredoka', sans-serif; font-weight: 600; font-size: 42px;
+    }
+    .app .name {
+      font-family: 'Fredoka', sans-serif; font-weight: 500; font-size: 16px;
+      color: #33524f;
+    }
+
+    /* Footer */
+    .footer {
+      margin-top: auto; padding-top: 64px;
+      font-size: 14px; color: var(--faint); text-align: center;
+    }
+    .footer a { color: inherit; text-decoration: none; }
+    .footer a:hover { color: var(--muted); }
+
+    /* Modal */
+    .overlay {
+      position: fixed; inset: 0;
+      background: rgba(28,46,44,.42);
+      backdrop-filter: blur(3px);
+      display: flex; align-items: center; justify-content: center;
+      padding: 24px; z-index: 50;
+      animation: ol-fade .2s ease;
+    }
+    .overlay[hidden] { display: none; }
+    .modal {
+      width: 540px; max-width: 100%;
+      background: #fff; border-radius: 26px;
+      box-shadow: 0 30px 70px rgba(20,40,38,.3);
+      padding: 36px 38px 34px; position: relative;
+      animation: ol-pop .26s cubic-bezier(.2,.8,.3,1);
+    }
+    .close {
+      position: absolute; top: 18px; right: 18px;
+      width: 34px; height: 34px; border-radius: 50%;
+      background: #f0f3f2; border: 0;
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer; font-size: 18px; color: #7a8e8b; line-height: 1;
+    }
+    .modal-head { display: flex; align-items: center; gap: 18px; }
+    .modal-icon {
+      width: 88px; height: 88px; flex: none; border-radius: 23px;
+      display: flex; align-items: center; justify-content: center;
+      font-family: 'Fredoka', sans-serif; font-weight: 600; font-size: 38px;
+      box-shadow: 0 8px 18px rgba(40,70,68,.14);
+    }
+    .modal-title {
+      font-family: 'Fredoka', sans-serif; font-weight: 600; font-size: 27px;
+      color: var(--ink); margin: 0;
+    }
+    .modal-tagline { font-size: 16px; color: var(--muted); margin-top: 3px; }
+    .modal-platform { font-size: 13px; color: var(--faint); margin-top: 6px; letter-spacing: .02em; }
+    .modal-desc { font-size: 16px; line-height: 1.65; color: #516e6b; margin: 24px 0; }
+    .shots { display: flex; gap: 14px; margin-bottom: 28px; }
+    .shot {
+      flex: 1; aspect-ratio: 9/19; border-radius: 18px;
+      background: repeating-linear-gradient(45deg, #eef4f3 0 10px, #f8fbfa 10px 20px);
+      border: 1px dashed #d6e2e0;
+      display: flex; align-items: center; justify-content: center;
+      font-family: monospace; font-size: 10px; color: #a6bcb9;
+    }
+    .cta {
+      display: flex; align-items: center; justify-content: center; gap: 9px;
+      padding: 15px; border-radius: 16px;
+      background: var(--accent); color: #fff;
+      font-family: 'Fredoka', sans-serif; font-weight: 500; font-size: 17px;
+      text-decoration: none;
+      box-shadow: 0 10px 22px rgba(63,138,144,.3);
+    }
+    .cta:hover { filter: brightness(1.05); }
+    .cta--soon {
+      background: #eef2f1; color: #8aa09d;
+      box-shadow: none; cursor: default; pointer-events: none;
+    }
+    .legal-links { margin-top: 14px; text-align: center; font-size: 13px; color: var(--faint); }
+    .legal-links a { color: var(--muted); text-decoration: none; margin: 0 6px; }
+    .legal-links a:hover { text-decoration: underline; }
+
+    @media (max-width: 480px) {
+      h1 { font-size: 38px; }
+      .grid { grid-template-columns: repeat(2, 128px); }
+      .modal { padding: 30px 22px 26px; }
+    }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <!-- HERO -->
+    <img class="logo" src="imgs/otter-logo.png" alt="OttersLab — an otter coding on a laptop" />
+    <h1>OttersLab</h1>
+    <p class="tagline">A tiny studio crafting iOS apps that are calm, useful, and a little playful — like an otter with a laptop.</p>
+
+    <!-- APPS -->
+    <div class="apps-label">Our apps</div>
+    <div class="grid" id="grid"></div>
+
+    <!-- FOOTER -->
+    <div class="footer">© <span id="year"></span> OttersLab · <a href="mailto:hello@otterslab.com">hello@otterslab.com</a></div>
+  </main>
+
+  <!-- DETAIL MODAL -->
+  <div class="overlay" id="overlay" hidden>
+    <div class="modal" role="dialog" aria-modal="true" aria-labelledby="m-title">
+      <button class="close" id="close" aria-label="Close">×</button>
+      <div class="modal-head">
+        <div class="modal-icon" id="m-icon"></div>
+        <div>
+          <h2 class="modal-title" id="m-title"></h2>
+          <div class="modal-tagline" id="m-tagline"></div>
+          <div class="modal-platform">iPhone · iPad</div>
+        </div>
+      </div>
+      <p class="modal-desc" id="m-desc"></p>
+      <div class="shots">
+        <div class="shot">screenshot</div>
+        <div class="shot">screenshot</div>
+        <div class="shot">screenshot</div>
+      </div>
+      <a class="cta" id="m-cta" href="#" target="_blank" rel="noopener">View on the App Store →</a>
+      <div class="legal-links">
+        <a id="m-privacy" href="#" target="_blank" rel="noopener">Privacy Policy</a>·
+        <a id="m-terms" href="#" target="_blank" rel="noopener">Terms of Use</a>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // OttersLab apps. Legal pages live under /<id>/. Set `comingSoon: true`
+    // for apps not yet on the App Store; give `icon` to use an image tile
+    // instead of a letter glyph.
+    const APPS = [
+      {
+        id: 'fridayai', letter: 'C', name: 'Copilot AI',
+        tagline: 'Your everyday AI chat assistant',
+        bg: '#d6e7e4', fg: '#3f8a90',
+        desc: 'A friendly AI assistant for everyday questions, writing, and ideas. Ask anything and get clear, helpful answers — right when you need them.',
+        appStore: 'https://apps.apple.com/us/app/copilot-ai-ai-chat-assistant/id6446813180'
+      },
+      {
+        id: 'gengoya', letter: 'G', name: 'GENGOYA',
+        tagline: 'Captions & posts that pop',
+        bg: '#e6dff0', fg: '#8478a0',
+        desc: 'Level up your social media with AI. GENGOYA helps you write scroll-stopping captions and posts in seconds, so your content always lands.',
+        appStore: 'https://apps.apple.com/us/app/gengoya/id6590617491'
+      },
+      {
+        id: 'hashtagspro', letter: 'H', name: 'Hashtags Pro',
+        tagline: 'The right hashtags, instantly',
+        bg: '#d7e3f0', fg: '#5b82a8',
+        desc: 'Find the perfect hashtags every time. Hashtags Pro uses AI to suggest the tags that actually grow your reach — no more guesswork.',
+        appStore: 'https://apps.apple.com/us/app/hashtags-pro/id6446612123'
+      },
+      {
+        id: 'imago', letter: 'A', name: 'AI Photo Finder',
+        tagline: 'Find any photo in seconds',
+        bg: '#f1ddd6', fg: '#c07c6b',
+        desc: 'Search your photo library the natural way. Describe what you remember and AI Photo Finder surfaces the right shot — no endless scrolling.',
+        appStore: 'https://apps.apple.com/us/app/ai-photo-finder/id6464158178'
+      },
+      {
+        id: 'sudsy', name: 'Sudsy!',
+        tagline: 'Laundry, sorted the smart way',
+        icon: 'imgs/sudsy-icon.png',
+        bg: '#2a2350', fg: '#fff',
+        desc: 'Never second-guess the laundry again. Scan your care labels with the camera and Sudsy! sorts every garment into the right wash and dry groups.',
+        comingSoon: true
+      }
+    ];
+
+    const grid = document.getElementById('grid');
+    const overlay = document.getElementById('overlay');
+
+    // Paint an icon tile: image fill when `app.icon` is set, otherwise a
+    // colored letter glyph.
+    function paintIcon(el, app) {
+      el.style.color = app.fg;
+      if (app.icon) {
+        el.textContent = '';
+        el.style.background = app.bg + ' center/cover no-repeat';
+        el.style.backgroundImage = 'url(' + app.icon + ')';
+      } else {
+        el.style.backgroundImage = 'none';
+        el.style.background = app.bg;
+        el.textContent = app.letter;
+      }
+    }
+
+    APPS.forEach(app => {
+      const btn = document.createElement('button');
+      btn.className = 'app';
+      btn.type = 'button';
+      btn.setAttribute('aria-label', 'Open ' + app.name + ' details');
+      const icon = document.createElement('span');
+      icon.className = 'icon';
+      paintIcon(icon, app);
+      const name = document.createElement('span');
+      name.className = 'name';
+      name.textContent = app.name;
+      btn.append(icon, name);
+      btn.addEventListener('click', () => openApp(app));
+      grid.appendChild(btn);
+    });
+
+    function openApp(app) {
+      paintIcon(document.getElementById('m-icon'), app);
+      document.getElementById('m-title').textContent = app.name;
+      document.getElementById('m-tagline').textContent = app.tagline;
+      document.getElementById('m-desc').textContent = app.desc;
+
+      const cta = document.getElementById('m-cta');
+      if (app.comingSoon) {
+        cta.classList.add('cta--soon');
+        cta.textContent = 'Coming soon to the App Store';
+        cta.removeAttribute('href');
+      } else {
+        cta.classList.remove('cta--soon');
+        cta.textContent = 'View on the App Store →';
+        cta.href = app.appStore;
+      }
+
+      document.getElementById('m-privacy').href = app.id + '/privacy_policy.html';
+      document.getElementById('m-terms').href = app.id + '/terms_of_use.html';
+      overlay.hidden = false;
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeModal() {
+      overlay.hidden = true;
+      document.body.style.overflow = '';
+    }
+
+    overlay.addEventListener('click', e => { if (e.target === overlay) closeModal(); });
+    document.getElementById('close').addEventListener('click', closeModal);
+    document.addEventListener('keydown', e => { if (e.key === 'Escape' && !overlay.hidden) closeModal(); });
+
+    document.getElementById('year').textContent = new Date().getFullYear();
+  </script>
+</body>
+</html>
